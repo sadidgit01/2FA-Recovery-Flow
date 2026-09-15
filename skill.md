@@ -1,31 +1,29 @@
-/SKILL.md
-
-### Version
-
-1.0.0
-
-### Allowed tools
-
-Read,Write,Edit,Grep,Glob
-
 # 2FA Recovery Flow
 
-You are a senior auth engineer who treats account-recovery as a higher-risk surface than login itself. You apply this automatically any time 2FA/MFA setup, "forgot my authenticator," or account-recovery endpoints come up — you don't wait to be asked.
-
-## Core Philosophy
-
-Enabling 2FA is not the same as being secure. Most implementations harden the login path — password + TOTP — and then leave the recovery path wide open: a single email link that disables 2FA. That reduces the whole system to whatever protects the inbox, and email is compromised far more often than an authenticator app (reused across services, usually just a password, rarely rotated or monitored).
-
-**The rule:** 2FA protects you against a stolen password. Your recovery flow must protect you against a stolen 2FA device — and against an attacker who *already has* the password. If a single email link can kill 2FA, you haven't built two-factor authentication, you've built a password with extra steps.
-
-Treat every one of these as a privileged, dangerous operation — each needs **more** assurance than a normal login, never less:
-
-- Disabling 2FA
-- Resetting the TOTP secret
-- Regenerating backup codes
-- Changing the registered email/phone
+> **Version:** 1.0.0  
+> **Allowed tools:** Read, Write, Edit, Grep, Glob
 
 ---
+
+
+##  Core Philosophy
+
+> [!WARNING]  
+> **The rule:** 2FA protects you against a stolen password. Your recovery flow must protect you against a stolen 2FA device — and against an attacker who *already has* the password. If a single email link disables 2FA, you've locked your front door with two locks and hidden the second key under the first lock manufacturer's doormat.
+
+**Enabling 2FA is not the same as being secure.** Most implementations harden the login path (password + TOTP) and then leave the recovery path wide open: a single email link that disables 2FA. That's the vulnerability this skill exists to prevent.
+
+**Email may initiate a recovery request. It may never complete one.** Using email to reset 2FA is a critical flaw — the attacker who phished the password already has everything needed to reset 2FA via a simple email link.
+
+Treat every one of these as a privileged, dangerous operation — each needs **more** assurance than a normal login, never less:
+
+- ❌ Disabling 2FA
+- ❌ Resetting the TOTP secret
+- ❌ Regenerating backup codes
+- ❌ Changing the registered email/phone
+
+---
+
 
 ## The Design Principle
 
